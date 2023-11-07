@@ -1,18 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:test_app/widgets/gridViewComponent.dart';
+// Copyright (c) 2019, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
 
-void main() {
-  runApp(const MyApp());
-}
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -23,9 +22,12 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
   final String title;
+
+  const MyHomePage({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -42,107 +44,103 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: Text(widget.title),
-            bottom: const TabBar(tabs: <Widget>[
-              Tab(
-                child: Icon(Icons.ac_unit),
-              ),
-              Tab(
-                child: Icon(Icons.ac_unit_sharp),
-              ),
-              Tab(
-                child: Icon(Icons.access_alarm),
-              ),
-            ]),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
+      body: Center(
+          child: ListView(
+        children: [
+          Text(
+            'chop house',
+            style: Theme.of(context).textTheme.displayLarge,
           ),
-          body: TabBarView(
+          Padding(padding: EdgeInsets.only(top: 20)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Card(
-                  child:
-                      Image.asset('images/test.jpg', height: 100, width: 100)),
-              PageView.builder(
-                itemBuilder: (BuildContext buildcontext, int index) =>
-                    PageWidget(pageinfo: pages[index]),
-                itemCount: pages.length,
+              Image.asset('images/test.jpg', width: 200, height: 200),
+              TextButton(
+                onPressed: () {
+                  var route = MaterialPageRoute(
+                    builder: (BuildContext context) => SecondPage(
+                      val1: 'chop house',
+                      val2: 'images/test.jpg',
+                    ),
+                  );
+                  Navigator.of(context).push(route);
+                },
+                child: Text('details'),
               ),
-              Card(
-                  child:
-                      Image.asset('images/test.jpg', height: 100, width: 100)),
             ],
           ),
-          //  const GridViewComponent(),
-          floatingActionButton: FloatingActionButton(
-            onPressed: _incrementCounter,
-            tooltip: 'Increment',
-            child: const Icon(Icons.add),
-          ), // This trailing comma makes auto-formatting nicer for build methods.
-        ),
+          Text('Apple meat'),
+          Text(
+            'plant house',
+            style: Theme.of(context).textTheme.displayLarge,
+          ),
+          Padding(padding: EdgeInsets.only(top: 20)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Image.asset('images/test.jpg', width: 200, height: 200),
+              TextButton(
+                onPressed: () {
+                  var route = MaterialPageRoute(
+                    builder: (BuildContext context) => SecondPage(
+                      val1: 'plant house',
+                      val2: 'images/test.jpg',
+                    ),
+                  );
+                  Navigator.of(context).push(route);
+                },
+                child: Text('details'),
+              ),
+            ],
+          ),
+          Text('Apple meat')
+        ],
+      )),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
       ),
     );
   }
 }
 
-class Pageinfo {
-  final String title;
-  final String description;
-  final String image;
+class SecondPage extends StatelessWidget {
+  final val1;
+  final val2;
+  const SecondPage({super.key, this.val1, this.val2});
 
-  Pageinfo(this.title, this.description, this.image);
-}
-
-final List<Pageinfo> pages = [
-  Pageinfo('Page 1', 'This is page 1', 'images/test.jpg'),
-  Pageinfo('Page 2', 'This is page 2', 'images/test.jpg'),
-  Pageinfo('Page 3', 'This is page 3', 'images/test.jpg'),
-  Pageinfo('Page 4', 'This is page 4', 'images/test.jpg'),
-  Pageinfo('Page 5', 'This is page 5', 'images/test.jpg'),
-  Pageinfo('Page 6', 'This is page 6', 'images/test.jpg'),
-  Pageinfo('Page 7', 'This is page 7', 'images/test.jpg'),
-  Pageinfo('Page 8', 'This is page 8', 'images/test.jpg'),
-  Pageinfo('Page 9', 'This is page 9', 'images/test.jpg')
-];
-
-class PageWidget extends StatefulWidget {
-  final Pageinfo pageinfo;
-
-  const PageWidget({super.key, required this.pageinfo});
-
-  @override
-  State<PageWidget> createState() => _PageWidgetState();
-}
-
-class _PageWidgetState extends State<PageWidget> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: ListView(
-        children: [
-          Row(
-            children: [
-              Text(
-                widget.pageinfo.title,
-                style: TextStyle(color: Colors.blue, fontSize: 25),
-              )
-            ],
-          ),
-          SizedBox(height: 10),
-          Image.asset(
-            widget.pageinfo.image,
-            fit: BoxFit.cover,
-          ),
-          SizedBox(height: 10),
-          Text(
-            widget.pageinfo.description,
-            style: TextStyle(color: Colors.blue, fontSize: 25),
-          )
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: Text('Second Page'),
+      ),
+      body: Center(
+        child: ListView(
+          children: [
+            Text(
+              '$val1',
+              style: Theme.of(context).textTheme.displayLarge,
+            ),
+            Padding(padding: EdgeInsets.only(top: 20)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset('$val2', width: 200, height: 200),
+              ],
+            ),
+            Text(
+                'Apple meat lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud'),
+          ],
+        ),
       ),
     );
   }
