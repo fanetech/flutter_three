@@ -14,21 +14,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
@@ -39,15 +24,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -60,23 +36,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return MaterialApp(
       home: DefaultTabController(
         length: 3,
@@ -101,8 +66,10 @@ class _MyHomePageState extends State<MyHomePage> {
               Card(
                   child:
                       Image.asset('images/test.jpg', height: 100, width: 100)),
-              Card(
-                child: Text('Hello World'),
+              PageView.builder(
+                itemBuilder: (BuildContext buildcontext, int index) =>
+                    PageWidget(pageinfo: pages[index]),
+                itemCount: pages.length,
               ),
               Card(
                   child:
@@ -116,6 +83,66 @@ class _MyHomePageState extends State<MyHomePage> {
             child: const Icon(Icons.add),
           ), // This trailing comma makes auto-formatting nicer for build methods.
         ),
+      ),
+    );
+  }
+}
+
+class Pageinfo {
+  final String title;
+  final String description;
+  final String image;
+
+  Pageinfo(this.title, this.description, this.image);
+}
+
+final List<Pageinfo> pages = [
+  Pageinfo('Page 1', 'This is page 1', 'images/test.jpg'),
+  Pageinfo('Page 2', 'This is page 2', 'images/test.jpg'),
+  Pageinfo('Page 3', 'This is page 3', 'images/test.jpg'),
+  Pageinfo('Page 4', 'This is page 4', 'images/test.jpg'),
+  Pageinfo('Page 5', 'This is page 5', 'images/test.jpg'),
+  Pageinfo('Page 6', 'This is page 6', 'images/test.jpg'),
+  Pageinfo('Page 7', 'This is page 7', 'images/test.jpg'),
+  Pageinfo('Page 8', 'This is page 8', 'images/test.jpg'),
+  Pageinfo('Page 9', 'This is page 9', 'images/test.jpg')
+];
+
+class PageWidget extends StatefulWidget {
+  final Pageinfo pageinfo;
+
+  const PageWidget({super.key, required this.pageinfo});
+
+  @override
+  State<PageWidget> createState() => _PageWidgetState();
+}
+
+class _PageWidgetState extends State<PageWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: ListView(
+        children: [
+          Row(
+            children: [
+              Text(
+                widget.pageinfo.title,
+                style: TextStyle(color: Colors.blue, fontSize: 25),
+              )
+            ],
+          ),
+          SizedBox(height: 10),
+          Image.asset(
+            widget.pageinfo.image,
+            fit: BoxFit.cover,
+          ),
+          SizedBox(height: 10),
+          Text(
+            widget.pageinfo.description,
+            style: TextStyle(color: Colors.blue, fontSize: 25),
+          )
+        ],
       ),
     );
   }
