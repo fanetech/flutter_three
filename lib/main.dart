@@ -35,11 +35,50 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  List<Geo> geos = [];
+
+  @override
+  void initState() {
+    geos = Geo.getGeo();
+    super.initState();
+  }
 
   void _incrementCounter() {
     setState(() {
       _counter++;
     });
+  }
+
+  DataTable dataTab() {
+    return DataTable(
+      columns: [
+        DataColumn(
+            label: Text(
+          "Country",
+          style: TextStyle(
+              color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 20),
+        )),
+        DataColumn(
+            label: Text(
+          "Capital city",
+          style: TextStyle(
+              color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 20),
+        )),
+        DataColumn(
+            label: Text(
+          "City",
+          style: TextStyle(
+              color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 20),
+        )),
+      ],
+      rows: geos
+          .map((geo) => DataRow(cells: [
+                DataCell(Text(geo.country)),
+                DataCell(Text(geo.capital)),
+                DataCell(Text(geo.city)),
+              ]))
+          .toList(),
+    );
   }
 
   @override
@@ -52,54 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
           child: ListView(
         children: [
-          Text(
-            'chop house',
-            style: Theme.of(context).textTheme.displayLarge,
-          ),
-          Padding(padding: EdgeInsets.only(top: 20)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Image.asset('images/test.jpg', width: 200, height: 200),
-              TextButton(
-                onPressed: () {
-                  var route = MaterialPageRoute(
-                    builder: (BuildContext context) => SecondPage(
-                      val1: 'chop house',
-                      val2: 'images/test.jpg',
-                    ),
-                  );
-                  Navigator.of(context).push(route);
-                },
-                child: Text('details'),
-              ),
-            ],
-          ),
-          Text('Apple meat'),
-          Text(
-            'plant house',
-            style: Theme.of(context).textTheme.displayLarge,
-          ),
-          Padding(padding: EdgeInsets.only(top: 20)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Image.asset('images/test.jpg', width: 200, height: 200),
-              TextButton(
-                onPressed: () {
-                  var route = MaterialPageRoute(
-                    builder: (BuildContext context) => SecondPage(
-                      val1: 'plant house',
-                      val2: 'images/test.jpg',
-                    ),
-                  );
-                  Navigator.of(context).push(route);
-                },
-                child: Text('details'),
-              ),
-            ],
-          ),
-          Text('Apple meat')
+          dataTab(),
         ],
       )),
       floatingActionButton: FloatingActionButton(
@@ -111,37 +103,29 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class SecondPage extends StatelessWidget {
-  final val1;
-  final val2;
-  const SecondPage({super.key, this.val1, this.val2});
+class Geo {
+  String country;
+  String capital;
+  String city;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text('Second Page'),
-      ),
-      body: Center(
-        child: ListView(
-          children: [
-            Text(
-              '$val1',
-              style: Theme.of(context).textTheme.displayLarge,
-            ),
-            Padding(padding: EdgeInsets.only(top: 20)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Image.asset('$val2', width: 200, height: 200),
-              ],
-            ),
-            Text(
-                'Apple meat lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud'),
-          ],
-        ),
-      ),
-    );
+  Geo(this.country, this.capital, this.city);
+
+  static List<Geo> getGeo() {
+    return <Geo>[
+      Geo('canada', 'Ottawa', 'America'),
+      Geo('USA', 'washington', 'America'),
+      Geo('China', 'Pekin', 'Asia'),
+      Geo('Burkina Faso', 'Ouagadougou', 'Africa'),
+      Geo('Togo', 'Lome', 'Africa'),
+      Geo('RCI', 'Abijan', 'Africa'),
+      Geo('Bresil', 'Brasilia', 'America'),
+      Geo('canada', 'Ottawa', 'America'),
+      Geo('USA', 'washington', 'America'),
+      Geo('China', 'Pekin', 'Asia'),
+      Geo('Burkina Faso', 'Ouagadougou', 'Africa'),
+      Geo('Togo', 'Lome', 'Africa'),
+      Geo('RCI', 'Abijan', 'Africa'),
+      Geo('Bresil', 'Brasilia', 'America'),
+    ];
   }
 }
