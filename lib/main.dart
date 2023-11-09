@@ -35,13 +35,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  List<Geo> geos = [];
-
-  @override
-  void initState() {
-    geos = Geo.getGeo();
-    super.initState();
-  }
+  var name = '';
+  var value = '';
 
   void _incrementCounter() {
     setState(() {
@@ -49,36 +44,16 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  DataTable dataTab() {
-    return DataTable(
-      columns: [
-        DataColumn(
-            label: Text(
-          "Country",
-          style: TextStyle(
-              color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 20),
-        )),
-        DataColumn(
-            label: Text(
-          "Capital city",
-          style: TextStyle(
-              color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 20),
-        )),
-        DataColumn(
-            label: Text(
-          "City",
-          style: TextStyle(
-              color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 20),
-        )),
-      ],
-      rows: geos
-          .map((geo) => DataRow(cells: [
-                DataCell(Text(geo.country)),
-                DataCell(Text(geo.capital)),
-                DataCell(Text(geo.city)),
-              ]))
-          .toList(),
-    );
+  void submit(String a) {
+    setState(() {
+      value = 'Envoyé';
+    });
+  }
+
+  void change(String val) {
+    setState(() {
+      name = val;
+    });
   }
 
   @override
@@ -89,9 +64,58 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-          child: ListView(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          dataTab(),
+          Text(
+            value,
+            style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+            textAlign: TextAlign.center,
+          ),
+          TextField(
+            decoration: const InputDecoration(
+              label: Text('Name'),
+              hintText: 'Enter your name',
+              icon: Icon(Icons.person),
+            ),
+            keyboardType: TextInputType.text,
+            autocorrect: true,
+            onChanged: change,
+            onSubmitted: submit,
+          ),
+          TextField(
+            decoration: const InputDecoration(
+              labelText: "phone",
+              hintText: "Telephone",
+              icon: Icon(
+                Icons.phone,
+                color: Colors.blue,
+                size: 25,
+              ),
+            ),
+            keyboardType: TextInputType.number,
+            onChanged: change,
+            onSubmitted: submit,
+            autofocus: true,
+            autocorrect: true,
+          ),
+          TextField(
+            decoration: const InputDecoration(
+              labelText: "password",
+              hintText: "password",
+              icon: Icon(
+                Icons.phone,
+                color: Colors.blue,
+                size: 25,
+              ),
+            ),
+            keyboardType: TextInputType.text,
+            obscureText: true,
+            onChanged: change,
+            onSubmitted: submit,
+            autofocus: true,
+            autocorrect: true,
+          ),
         ],
       )),
       floatingActionButton: FloatingActionButton(
@@ -100,32 +124,5 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ),
     );
-  }
-}
-
-class Geo {
-  String country;
-  String capital;
-  String city;
-
-  Geo(this.country, this.capital, this.city);
-
-  static List<Geo> getGeo() {
-    return <Geo>[
-      Geo('canada', 'Ottawa', 'America'),
-      Geo('USA', 'washington', 'America'),
-      Geo('China', 'Pekin', 'Asia'),
-      Geo('Burkina Faso', 'Ouagadougou', 'Africa'),
-      Geo('Togo', 'Lome', 'Africa'),
-      Geo('RCI', 'Abijan', 'Africa'),
-      Geo('Bresil', 'Brasilia', 'America'),
-      Geo('canada', 'Ottawa', 'America'),
-      Geo('USA', 'washington', 'America'),
-      Geo('China', 'Pekin', 'Asia'),
-      Geo('Burkina Faso', 'Ouagadougou', 'Africa'),
-      Geo('Togo', 'Lome', 'Africa'),
-      Geo('RCI', 'Abijan', 'Africa'),
-      Geo('Bresil', 'Brasilia', 'America'),
-    ];
   }
 }
