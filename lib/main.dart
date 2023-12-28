@@ -35,8 +35,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  var name = '';
-  var value = '';
+  String name = '';
+  String value = '';
+  String phone = '';
+  String password = '';
+  final formKey = GlobalKey<FormState>();
 
   void _incrementCounter() {
     setState(() {
@@ -45,15 +48,41 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void submit(String a) {
-    setState(() {
-      value = 'Envoyé';
-    });
+    // print(a);
+    // setState(() {
+    //   value = 'Envoyé';
+    // });
+    validationForm();
   }
 
   void change(String val) {
     setState(() {
       name = val;
     });
+  }
+
+  void change2(String val) {
+    setState(() {
+      phone = val;
+    });
+  }
+
+  void change3(String val) {
+    setState(() {
+      password = val;
+    });
+  }
+
+  validationForm() {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      debugPrint('name: $name');
+      debugPrint('phone: $phone');
+      debugPrint('password: $password');
+      formKey.currentState!.reset();
+    } else {
+      debugPrint('not valid');
+    }
   }
 
   @override
@@ -63,61 +92,71 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            value,
-            style: TextStyle(fontSize: 20, color: Colors.deepPurple),
-            textAlign: TextAlign.center,
-          ),
-          TextField(
-            decoration: const InputDecoration(
-              label: Text('Name'),
-              hintText: 'Enter your name',
-              icon: Icon(Icons.person),
+      body: Form(
+        key: formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              value,
+              style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+              textAlign: TextAlign.center,
             ),
-            keyboardType: TextInputType.text,
-            autocorrect: true,
-            onChanged: change,
-            onSubmitted: submit,
-          ),
-          TextField(
-            decoration: const InputDecoration(
-              labelText: "phone",
-              hintText: "Telephone",
-              icon: Icon(
-                Icons.phone,
-                color: Colors.blue,
-                size: 25,
+            TextFormField(
+              decoration: const InputDecoration(
+                label: Text('Name'),
+                hintText: 'Enter your name',
+                icon: Icon(Icons.person),
               ),
+              keyboardType: TextInputType.text,
+              autocorrect: true,
+              // onChanged: change,
+              validator: (val) =>
+                  (val!.isEmpty || val == null) ? 'check your name' : null,
+              onSaved: (value) => name = value!,
             ),
-            keyboardType: TextInputType.number,
-            onChanged: change,
-            onSubmitted: submit,
-            autofocus: true,
-            autocorrect: true,
-          ),
-          TextField(
-            decoration: const InputDecoration(
-              labelText: "password",
-              hintText: "password",
-              icon: Icon(
-                Icons.phone,
-                color: Colors.blue,
-                size: 25,
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: "phone",
+                hintText: "Telephone",
+                icon: Icon(
+                  Icons.phone,
+                  color: Colors.blue,
+                  size: 25,
+                ),
               ),
+              keyboardType: TextInputType.number,
+              // onChanged: change2,
+              autofocus: true,
+              autocorrect: true,
+              validator: (val) => val!.isEmpty ? 'check your phone' : null,
+              onSaved: (value) => phone = value!,
             ),
-            keyboardType: TextInputType.text,
-            obscureText: true,
-            onChanged: change,
-            onSubmitted: submit,
-            autofocus: true,
-            autocorrect: true,
-          ),
-        ],
-      )),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: "password",
+                hintText: "password",
+                icon: Icon(
+                  Icons.password,
+                  color: Colors.blue,
+                  size: 25,
+                ),
+              ),
+              keyboardType: TextInputType.text,
+              obscureText: true,
+              // onChanged: change3,
+              // autofocus: true,
+              // autocorrect: true,
+              validator: (val) => val!.isEmpty ? 'check your password' : null,
+              onSaved: (value) => password = value!,
+            ),
+            ElevatedButton(
+              onPressed: () => submit(name),
+              child: const Text('Submit'),
+            ),
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
