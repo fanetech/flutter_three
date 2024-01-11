@@ -32,7 +32,7 @@ class _SliverBarState extends State<SliverBar> {
           ),
           centerTitle: true,
           pinned: true,
-          floating: false,
+          floating: true,
           expandedHeight: 200,
           backgroundColor: Colors.transparent,
           flexibleSpace: FlexibleSpaceBar(

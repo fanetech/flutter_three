@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:lecle_flutter_carousel_pro/lecle_flutter_carousel_pro.dart';
+import 'package:test_app/widgets/backDropFilter.dart';
 import 'package:test_app/widgets/sliverBar.dart';
 // import 'package:another_carousel_pro/another_carousel_pro.dart';
 
@@ -95,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: SliverBar(),
+      body: BackDropFilter(),
       // body: ListView(
       //   children: [
       //     // const CarouselPage(),
